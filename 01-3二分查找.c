@@ -10,10 +10,10 @@ typedef int Position;
 typedef struct LNode *List;
 struct LNode {
 	ElementType Data[MAXSIZE];
-	Position Last; /* ±£´æÏßĞÔ±íÖĞ×îºóÒ»¸öÔªËØµÄÎ»ÖÃ */
+	Position Last; /* ä¿å­˜çº¿æ€§è¡¨ä¸­æœ€åä¸€ä¸ªå…ƒç´ çš„ä½ç½® */
 };
 
-List ReadInput(); /* ²ÃÅĞÊµÏÖ£¬Ï¸½Ú²»±í¡£ÔªËØ´ÓÏÂ±ê1¿ªÊ¼´æ´¢ */
+List ReadInput(); /* è£åˆ¤å®ç°ï¼Œç»†èŠ‚ä¸è¡¨ã€‚å…ƒç´ ä»ä¸‹æ ‡1å¼€å§‹å­˜å‚¨ */
 Position BinarySearch(List L, ElementType X);
 
 int main()
@@ -55,6 +55,6 @@ Position BinarySearch(List L, ElementType X)
 	return middle;
 }
 
-//¿ÉÄÜ³öÏÖµÄÎÊÌâ fornt==last return notfound
+//å¯èƒ½å‡ºç°çš„é—®é¢˜ fornt==last return notfound
 //              middle-1
-//              ÅĞ¶ÏÓï¾äÔÚreturnÇ°Ãæ£¬whileÍâÃæ
+//              åˆ¤æ–­è¯­å¥åœ¨returnå‰é¢ï¼Œwhileå¤–é¢
