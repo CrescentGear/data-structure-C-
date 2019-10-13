@@ -55,6 +55,13 @@ Position BinarySearch(List L, ElementType X)
 	return middle;
 }
 
-//可能出现的问题 fornt==last return notfound
-//              middle-1
-//              判断语句在return前面，while外面
+/*可能出现的问题 为什么是 50 行是 if(fornt>=last) 而不是 if(fornt==last)
+               为什么是last = middle - 1 （front = middle + 1）
+               为什么判断语句
+                if(front>=last && L->Data[middle] != X)
+		{
+			return NotFound;
+		}
+		在while（）函数里面
+		
+*/		
