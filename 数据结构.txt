@@ -1,0 +1,23 @@
+//可能出现的问题 fornt==last return notfound
+//              middle-1
+//              判断语句在return前面，while外面
+
+题中得知数组顺序为递增
+假设数组顺序为
+2 , 4 , 6 , 8 , 10 所要寻找的X的值为7
+
+front初始值 ： 1
+last初始值  ： L->Last ( 5 )
+
+程序中front的变化顺序为 ：4
+
+程序中last的变化顺序为  ：/
+3
+
+此时front>last
+
+博客内容
+
+如果在while外面
+在找不到数值X的情况下会一直陷入死循环。
+
