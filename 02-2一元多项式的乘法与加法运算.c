@@ -1,16 +1,3 @@
-/*
- 非满分，待完善
- 未考虑测试点1	同类项合并时有抵消 和
- 测试点2	系数和指数取上限，结果有零多项式
- 
- 目前得分14/20
- 
- 下面的代码是先相乘再相加的代码。
- 在线处理的代码待完善。
- 
- 
- 
-*/
 #pragma warning(disable:4996)
 #include <stdlib.h>
 #include <stdio.h>
@@ -95,6 +82,10 @@ List Create_Node()
 
 void Output_Node(List input)
 {
+    if (!input)
+	{
+		printf("0 0");
+	}
 	while (input)
 	{
 		printf("%d %d", input->coef, input->expon);
@@ -123,9 +114,12 @@ List Add_Node(List input1 , List input2)
 			T->coef = input1_temp->coef;
 			T->expon = input1_temp->expon;
 			input1_temp=input1_temp->next;
-			L_temp->next = T;
-			L_temp = T;
-			T->next = NULL;
+			if(T->coef!=0)
+			{
+				L_temp->next = T;
+				L_temp = T;
+			}
+				T->next = NULL;
 		}
 		else if (input1_temp->expon < input2_temp->expon) //L1<L2
 		{
@@ -134,8 +128,11 @@ List Add_Node(List input1 , List input2)
 			T->coef = input2_temp->coef;
 			T->expon = input2_temp->expon;
 			input2_temp = input2_temp->next;
-			L_temp->next = T;
-			L_temp = T;
+			if (T->coef != 0)
+			{
+				L_temp->next = T;
+				L_temp = T;
+			}
 			T->next = NULL;
 		}
 		else
@@ -146,8 +143,11 @@ List Add_Node(List input1 , List input2)
 			T->expon = input2_temp->expon;
 			input1_temp = input1_temp->next;
 			input2_temp = input2_temp->next;
-			L_temp->next = T;
-			L_temp = T;
+			if (T->coef != 0)
+			{
+				L_temp->next = T;
+				L_temp = T;
+			}
 			T->next = NULL;
 		}
 	}
