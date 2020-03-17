@@ -30,6 +30,7 @@ int main()
 	return 0;
 }
 
+法一：
 Position BinarySearch(List L, ElementType X)
 {
 	int middle = 0;
@@ -54,6 +55,43 @@ Position BinarySearch(List L, ElementType X)
 	}
 	return middle;
 }
+
+法二：
+Position BinarySearch(List L, ElementType X)
+{
+	int position;
+	int i;
+	int end;
+	int now;
+	position = NotFound;
+	i = 1;
+	end = L->Last;
+	now = (i + end) / 2;
+	while (i < end)
+	{
+		if (X == L->Data[now])
+		{
+			position = now;
+			break;
+		}
+		else if (X > L->Data[now])
+		{
+			i = now + 1;
+			now = (i + end) / 2;
+		}
+		else
+		{
+			end = now;
+			now = (i + end) / 2;
+		}
+	}
+	if (X == L->Data[now])
+	{
+		position = now;
+	}
+	return position;
+}
+
 
 /*可能出现的问题 为什么第50行 是if(front>=last && L->Data[middle] != X)
                           而不是if(front==last && L->Data[middle] != X)
