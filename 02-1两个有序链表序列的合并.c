@@ -39,16 +39,3 @@ List Merge(List L1,List L2)
 	L2->Next = NULL;
 	return L;
 }
-/*
- 第25行到第41行，其实可以直接写成 
-  if(T_L1)
-  {
-    temp->Next = T_L1;
-  }
-  else
-  {
-   temp->Next = T_L2;
-  }
-  虽然后续操作中 L1->Next = NULL；
-  但是原来的链表并没有被释放掉，所以不影响。
-*/
