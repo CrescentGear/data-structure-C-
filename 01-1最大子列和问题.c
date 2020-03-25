@@ -43,8 +43,38 @@ int main()
     return 0;
 }
 
+/*用链表写法（待补完）*/
+#pragma warning(disable:4996)
 
+#include <stdio.h>
+#include <stdlib.h>
 
+typedef struct Node *List;
+struct Node
+{
+	int number;
+	List next;
+};
+
+List Create(int number);
+
+int main()
+{
+	int inputnumber;
+	List L;
+	scanf("%d",&inputnumber);
+	L=Create(inputnumber);
+	return 0;
+}
+
+List Create(int number);
+{
+	List L,t;
+	L = (List)malloc(sizeof(struct Node));
+	temp = L;
+
+	return L;
+}
 
 
 //算法 4 ，T(N)=O(N)
