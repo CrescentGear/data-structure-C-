@@ -43,7 +43,7 @@ int main()
     return 0;
 }
 
-/*用链表写法（待补完）*/
+/*用链表写法*/
 #pragma warning(disable:4996)
 
 #include <stdio.h>
@@ -60,19 +60,55 @@ List Create(int number);
 
 int main()
 {
-	int inputnumber;
-	List L;
+	int inputnumber,max,max_1;
+	List L,temp;
 	scanf("%d",&inputnumber);
 	L=Create(inputnumber);
+	max = 0;
+	max_1 = 0;
+	for (int i = 0; i < inputnumber; i++)
+	{
+		temp = L;
+		max_1 += temp->number;
+		temp = temp->next;
+		if (max_1 < 0)
+		{
+			max_1 = 0;
+		}
+		else
+		{
+			if (max_1 > max)
+			{
+				max = max_1;
+			}
+		}
+		L = L->next;
+	}
+	printf("%d",max);
 	return 0;
 }
 
-List Create(int number);
+List Create(int number)
 {
-	List L,t;
+	List L,t,cycle;
+	int i,data;
 	L = (List)malloc(sizeof(struct Node));
-	temp = L;
-
+	L->next = NULL;
+	t = L;
+	i = 0;
+	for (i=0;i<number;i++)
+	{
+		List temp;
+		temp = (List)malloc(sizeof(struct Node));
+		scanf("%d",&data);
+		temp->number = data;
+		t->next = temp;
+		t = temp;
+	}
+	t->next = NULL;
+	cycle = L;
+	L = L->next;
+	free(cycle);
 	return L;
 }
 
