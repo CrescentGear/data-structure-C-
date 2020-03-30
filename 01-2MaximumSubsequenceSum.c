@@ -69,3 +69,94 @@ int main()
    下面的网址是别人用不一样的赋值思路解决问题的代码，感兴趣的朋友可以看一下。
    http://www.bubuko.com/infodetail-3055362.html
  */
+
+ /*链表算法*/
+ #pragma warning(disable:4996)
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node *List;
+struct Node
+{
+	int number;
+	List next;
+};
+
+List Create(int number);
+
+int main()
+{
+	int inputnumber,max,max_1,front,rear,flag,front_1;
+	List L,temp;
+	scanf("%d",&inputnumber);
+	L=Create(inputnumber);
+	max = -1;
+	max_1 = 0;
+	front = 0;
+	rear = 0;
+	flag = 0;
+	front_1 = L->number;
+	front = L->number;
+	for (int i = 0; i < inputnumber; i++)
+	{
+		temp = L;
+		max_1 += temp->number;
+		temp = temp->next;
+		if (max_1 < 0)
+		{
+			max_1 = 0;
+			flag=1;
+		}
+		else 
+		{
+			if (max_1 > max)
+			{
+				max = max_1;
+				front = front_1;
+				rear = L->number;
+			}
+		}
+		if (max<0  )
+		{
+			rear = L->number;
+		}
+		L = L->next;
+		if (flag==1 && L)
+		{
+			front_1 = L->number;
+			flag = 0;
+		}
+	}
+	if (max<0)
+	{
+		max = 0;
+	}
+	printf("%d %d %d",max,front,rear);
+	return 0;
+}
+
+List Create(int number)
+{
+	List L,t,cycle;
+	int i,data;
+	L = (List)malloc(sizeof(struct Node));
+	L->next = NULL;
+	t = L;
+	i = 0;
+	for (i=0;i<number;i++)
+	{
+		List temp;
+		temp = (List)malloc(sizeof(struct Node));
+		scanf("%d",&data);
+		temp->number = data;
+		t->next = temp;
+		t = temp;
+	}
+	t->next = NULL;
+	cycle = L;
+	L = L->next;
+	free(cycle);
+	return L;
+}
+
