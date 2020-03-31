@@ -71,7 +71,7 @@ int main()
  */
 
  /*链表算法*/
- #pragma warning(disable:4996)
+#pragma warning(disable:4996)
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -87,7 +87,7 @@ List Create(int number);
 
 int main()
 {
-	int inputnumber,max,max_1,front,rear,flag,front_1;
+	int inputnumber,max,max_1,front,rear,front_1;
 	List L,temp;
 	scanf("%d",&inputnumber);
 	L=Create(inputnumber);
@@ -95,7 +95,6 @@ int main()
 	max_1 = 0;
 	front = 0;
 	rear = 0;
-	flag = 0;
 	front_1 = L->number;
 	front = L->number;
 	for (int i = 0; i < inputnumber; i++)
@@ -103,29 +102,21 @@ int main()
 		temp = L;
 		max_1 += temp->number;
 		temp = temp->next;
-		if (max_1 < 0)
+		if (max_1 > max)
 		{
-			max_1 = 0;
-			flag=1;
+		    max = max_1;
+		    front = front_1;
+		    rear = L->number;
 		}
-		else 
-		{
-			if (max_1 > max)
-			{
-				max = max_1;
-				front = front_1;
-				rear = L->number;
-			}
-		}
-		if (max<0  )
+		if (max<0 )
 		{
 			rear = L->number;
 		}
 		L = L->next;
-		if (flag==1 && L)
+		if (max_1 < 0 && L)
 		{
 			front_1 = L->number;
-			flag = 0;
+           		max_1 = 0;
 		}
 	}
 	if (max<0)
@@ -159,4 +150,3 @@ List Create(int number)
 	free(cycle);
 	return L;
 }
-
