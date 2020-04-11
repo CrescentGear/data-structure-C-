@@ -4,65 +4,68 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Tree *TList;
+typedef struct Node *List;
 
-struct Tree
+struct Node
 {
 	int data;
-	TList left;
-	TList right;
+	List next;
 };
 
-struct Number
+struct 
 {
 	int data;
 	int left;
 	int right;
-};
+}number[10];
 
 struct Queue
 {
-	TList front;
-	TList rear;
+	List front;
+	List rear;
 };
 
-TList Build(void);
 
 int main()
 {
-	int inputnumber,root;
-	scanf("%d",&inputnumber);
-    struct Nnumber number[10];
+	int inputnumber, root;
+	List L,t;
+	L = (List)malloc(sizeof(struct Node));
+	L->next = NULL;
+	t = L;
+	scanf("%d", &inputnumber);
 	root = 0;
-	for (int i=0;i<10;i++)
+	for (int i = 0; i < 10; i++)
 	{
 		number[i].data = -1;
 		number[i].left = -1;
 		number[i].right = -1;
 	}
-	for (int i=0;i<inputnumber;i++)
+	for (int i = 0; i < inputnumber; i++)
 	{
 		char left;
 		char right;
-		scanf("%c %c",&left,&right);
-		if (left!='-')
+		scanf("%c %c", &left, &right);
+		if (left != '-')
 		{
-			left = left - '0';
-			number[left] = 1;
+			number[i].left = left - '0';
+			number[left].data = 1;
 		}
 		if (right != '-')
 		{
-			right = right - '0';
-			number[right] = 1;
+			number[i].data = right - '0';
+			number[right].data = 1;
 		}
 	}
 	for (int i = 0; i < inputnumber; i++)
 	{
-		if (number[i]==-1)
+		if (number[i].data == -1)
 		{
 			root = i;
 		}
 	}
+
+
 
 	return 0;
 }
