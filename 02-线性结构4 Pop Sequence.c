@@ -1,4 +1,5 @@
-//未写完
+//未写完（10/25）
+//测试点0 sample乱序，一般的Y&N 未通过
 #pragma warning(disable:4996)
 
 #include <stdio.h>
@@ -12,118 +13,161 @@ struct Node
 	List next;
 };
 
-List Create(int n); //队列的创建
-int Is(List L, int m, int n);
-void AddS(int number,List L); //栈的添加
-void PopS( List L); //栈的输出
+int pop(List S);
+void push(int number , List S);
+int IsEmpty(List S);
+List Input(int N);
+List Input1();
+int Is(List S,List check,int M);
+
 int main()
 {
-	List list;
-
-	int m, n, k;//m是栈的容量，n是输入的长度，k是待检测的个数
-	int result;
-	result = 0;
-	scanf("%d %d %d", &m, &n, &k);
-	for (int i = 0; i < k; i++)
+	int M, N, K;//M是最大容量 N是长度 K是需要检查几个表
+	scanf("%d %d %d",&M,&N,&K);
+	if (M<0||N<0||K<0)
 	{
-		list = Create(n);
-		result = Is(list, m, n);
-		if (result == 1)
+		return 0;
+	}
+	int i,result;
+	i = 0;
+	result = 0;
+	List check;
+	check = Input1();
+	for (i=0;i<K;i++)
+	{
+		List S1;
+		S1 = Input(N);
+		result = Is( S1,check,M);
+		if (result==1)
 		{
-			printf("Yes\n");
+			printf("YES\n");
 		}
 		else
 		{
-			printf("No\n");
+			printf("NO\n");
 		}
 	}
 	return 0;
 }
 
-List Create(int n)
+int IsEmpty(List S)
 {
-	List L, t, cycle;
-	L = (List)malloc(sizeof(struct Node));
-	L->next = NULL;
-	t = L;
-	for (int i = 0; i < n; i++)
+	if (S->next==NULL)
 	{
-		List temp;
-		temp = (List)malloc(sizeof(struct Node));
-		temp->next = NULL;
-		int number;
-		scanf("%d", &number);
-		temp->number = number;
-		t->next = temp;
-		t = temp;
+		return 1;
 	}
-	cycle = L;
-	L = L->next;
-	free(cycle);
-	return L;
+	return 0;
 }
 
-void AddS(int number,List L)
+int pop(List S)
 {
+	if (IsEmpty(S))
+	{
+		return 0;
+	}
+	int number;
+	List temp;
+	temp = S->next;
+	number = temp->number;
+	S->next = temp->next;
+	free(temp);
+	return number;
+}
 
+void push(int number , List S)
+{
 	List temp;
 	temp = (List)malloc(sizeof(struct Node));
-	temp->next = NULL;
 	temp->number = number;
-	temp->next = L->next;
-	L->next = temp;
-	printf("%d", L->number);
+	temp->next = S->next;
+	S->next = temp;
 }
 
-void PopS( List L)
+List Input(int N)
 {
-	if(L)
-	{ 
-		List  t, cycle;
-		t = L;
-		printf("%d", t->number);
-		List temp;
-		temp = (List)malloc(sizeof(struct Node));
-		temp= t->next;
-		t->next= temp->next;
-		free(temp);
-	}
-}
-
-int Is(List L, int m, int n)
-{
-	int re, vol, count;
-	re = 1;
-	count = 1;
-	vol = 0;
-	List S, t, l,cycle;
+	List S;
+	List temp1,cycle;
 	S = (List)malloc(sizeof(struct Node));
 	S->next = NULL;
-	l = L;
-	t = S;
-	while (vol <= n + 1  && l)
+	temp1 = S;
+	int i;
+	i = 0;
+	for (i=0;i<N;i++)
 	{
-		printf("输入:");
-		AddS(count, t);
-		count++;
-		vol++;
-		t = t->next;
-		while (l->number == t->number)
+		int number;
+		scanf(" %d",&number);
+		List temp;
+		temp= (List)malloc(sizeof(struct Node));
+		temp->number = number;
+		temp->next = NULL;
+		temp1->next = temp;
+		temp1 = temp1->next;
+	}
+	cycle = S;
+	S = S->next;
+	free(cycle);
+	return S;
+}
+
+List Input1( )
+{
+	List S;
+	List temp1;
+	S = (List)malloc(sizeof(struct Node));
+	S->next = NULL;
+	return S;
+}
+
+int Is(List S1, List check,int M)
+{
+	int number;
+	int number1;
+	int number2;
+	int count;
+	int flag;
+	flag = 0;
+	count = 1;
+	number = 1;
+	number2 = 0;
+	number1 = 0;
+	List S,check1;
+	S = S1;
+	check1 = check;
+
+	while (S)
+	{
+		if (!S)
 		{
-			printf("输出:");
-			l = l->next;
-			PopS(t);
-			vol--;
-			if (vol==0)
+			return 0;
+		}
+		if (flag==0)
+		{
+			flag = 1;
+			push(1,check1);
+		}
+		number1 = S->number;
+		number2 = pop(check1);
+		if (number2==number1)
+		{
+			S = S->next;
+			count--;
+		}
+		else if(number2<number1)
+		{
+			push(number2, check1);
+			number++;
+			push(number, check1);
+			count++;
+			if (count>M||count<0)
 			{
-				break;
+				return 0;
 			}
 		}
-
+		else
+		{
+			return 0;
+		}
 	}
-	if (count>0)
-	{
-		re = 0;
-	}
-	return re;
+	
+	return 1;
 }
