@@ -7,7 +7,7 @@
 
 typedef struct Node * List;
 
-struct Node
+struct Node     //链表
 {
 	int number;
 	List next;
@@ -16,15 +16,15 @@ struct Node
 int pop(List S);
 void push(int number , List S);
 int IsEmpty(List S);
-List Input(int N);
-List Input1();
-int Is(List S,List check,int M);
+List Input(int N); //队列的输入
+List Input1();     //栈的输入
+int Is(List S,List check,int M);//判断函数
 
 int main()
 {
 	int M, N, K;//M是最大容量 N是长度 K是需要检查几个表
 	scanf("%d %d %d",&M,&N,&K);
-	if (M<0||N<0||K<0)
+	if (M<0||N<0||K<0)    //如果输入的数字为负数，则结束程序
 	{
 		return 0;
 	}
@@ -32,12 +32,12 @@ int main()
 	i = 0;
 	result = 0;
 	List check;
-	check = Input1();
-	for (i=0;i<K;i++)
+	check = Input1();  //用来做判断的栈（先入后出）
+	for (i=0;i<K;i++)  //一一判断输入的数字组是否符合要求
 	{
-		List S1;
-		S1 = Input(N);
-		result = Is( S1,check,M);
+		List S1;   
+		S1 = Input(N); //输入的数字组以队列的方式储存（非循环队列）
+		result = Is( S1,check,M); //判断结果 1为yes 0为no
 		if (result==1)
 		{
 			printf("YES\n");
@@ -50,7 +50,7 @@ int main()
 	return 0;
 }
 
-int IsEmpty(List S)
+int IsEmpty(List S)     //栈是否为空
 {
 	if (S->next==NULL)
 	{
@@ -59,7 +59,7 @@ int IsEmpty(List S)
 	return 0;
 }
 
-int pop(List S)
+int pop(List S)   //栈的顶部元素输出
 {
 	if (IsEmpty(S))
 	{
@@ -74,7 +74,7 @@ int pop(List S)
 	return number;
 }
 
-void push(int number , List S)
+void push(int number , List S)  //把元素压入栈顶
 {
 	List temp;
 	temp = (List)malloc(sizeof(struct Node));
@@ -83,7 +83,7 @@ void push(int number , List S)
 	S->next = temp;
 }
 
-List Input(int N)
+List Input(int N)  //队列的输入
 {
 	List S;
 	List temp1,cycle;
@@ -105,11 +105,11 @@ List Input(int N)
 	}
 	cycle = S;
 	S = S->next;
-	free(cycle);
+	free(cycle);  //回收空的头结点
 	return S;
 }
 
-List Input1( )
+List Input1( )//栈的输入
 {
 	List S;
 	List temp1;
@@ -118,7 +118,7 @@ List Input1( )
 	return S;
 }
 
-int Is(List S1, List check,int M)
+int Is(List S1, List check,int M)  //判断
 {
 	int number;
 	int number1;
@@ -144,21 +144,21 @@ int Is(List S1, List check,int M)
 		{
 			flag = 1;
 			push(1,check1);
-		}
-		number1 = S->number;
-		number2 = pop(check1);
+		}  //第一次执行 在空栈里压入1
+		number1 = S->number;  //输入的数字组的元素
+		number2 = pop(check1);//栈的元素
 		if (number2==number1)
 		{
 			S = S->next;
-			count--;
+			count--; //数字一样出栈
 		}
 		else if(number2<number1)
 		{
 			push(number2, check1);
 			number++;
-			push(number, check1);
-			count++;
-			if (count>M||count<0)
+			push(number, check1);//数字不一样，把之前的数字入栈，同时压入一个新的数字
+			count++;             //已有的数字个数+1
+			if (count>M||count<0) //判断栈的容量是否溢出
 			{
 				return 0;
 			}
