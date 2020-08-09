@@ -1,3 +1,8 @@
+/*未写完
+17/25
+测试点 1 最大N，多组合  未通过
+*/
+
 #pragma warning(disable:4996)
 
 #include <stdio.h>
