@@ -40,8 +40,7 @@ int main()
 	for (i = 0; i < m; i++) {
 		scanf("%d", &j);
 		printf("%d", H[j]);
-		while (j > 1) { /*沿根方向输出各结点*/
-			j /= 2;
+		for (j=j/2; j > 0;j=j/2) { /*沿根方向输出各结点*/
 			printf(" %d", H[j]);
 		}
 		printf("\n");
