@@ -1,0 +1,98 @@
+#pragma warning(disable:4996)
+#include <stdio.h>
+
+typedef struct Node * List;
+
+struct Node
+{
+	int data;
+	List next;
+};
+
+List Create();
+List Cul(List L1,List L2);
+
+int main()
+{
+	List L1, L2, L3;
+	L1 = Create();
+	L2 = Create();
+	L3 = Cul(L1,L2);
+	if(L3)
+	{ 
+		printf("%d", L3->data);
+		L3 = L3->next;
+		while (L3)
+		{
+			printf(" %d",L3->data);
+			L3 = L3->next;
+		}
+	}
+	else
+	{
+		printf("NULL");
+	}
+	return 0;
+}
+
+List Create()
+{
+	List L,t,cycle;
+	int a;
+	scanf("%d",&a);
+	L = (List)malloc(sizeof (struct Node));
+	t = L;
+	L->next = NULL;
+
+	while (a!=-1)
+	{
+		List temp;
+		temp = (List)malloc(sizeof(struct Node));
+		temp->next = NULL;
+		temp->data = a;
+		t->next = temp;
+		t = temp;
+		scanf(" %d",&a);
+	}
+	cycle = L;
+	L = L->next;
+	free(cycle);
+	return L;
+}
+
+List Cul(List L1,List L2)
+{
+	List L3,t,cycle;
+	List l1, l2;
+	l1 = L1;
+	l2 = L2;
+	L3 = (List)malloc(sizeof(struct Node));
+	t = L3;
+	L3->next = NULL;
+	while (l1 && l2)
+	{
+		if (l1->data==l2->data)
+		{
+			List temp;
+			temp = (List)malloc(sizeof(struct Node));
+			temp->next = NULL;
+			temp->data = l1->data;
+			t->next = temp;
+			t = temp;
+			l1 = l1->next;
+			l2 = l2->next;
+		}
+		else if(l1->data>l2->data)
+		{
+			l2 = l2->next;
+		}
+		else
+		{
+			l1 = l1->next;
+		}
+	}
+	cycle = L3;
+	L3 = L3->next;
+	free(cycle);
+	return L3;
+}
