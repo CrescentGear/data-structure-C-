@@ -1,0 +1,128 @@
+/*
+  这道题在最后一个测试点（测试点5 最大N）卡了一下。
+  去参考了一下其他大佬的答案后，才发觉自己是题目意思理解错了。（毕竟要求中位数，想想自己一开始的思路还真是十分地naive。）
+  此并集非彼并集。
+  数学的并集是去掉重复数字，
+  这里的并集是重复数字都保留。
+  如果这题代码感觉都写对了，但是就是ac不了的话，
+  记得在合并链表的时候，把重复的数字给全部加上去。
+*/
+#pragma warning(disable:4996)
+#include <stdio.h>
+
+typedef struct Node * List;
+
+struct Node
+{
+	int data;
+	List next;
+};
+
+List Create(int number);
+int Cul(List L1,List L2);
+
+int main()
+{
+	List L1, L2;
+	int number;
+	int result;
+	scanf("%d",&number);
+	L1 = Create(number);
+	L2 = Create(number);
+	result = Cul(L1,L2);
+	printf("%d",result);
+	system("pause");
+	return 0;
+}
+
+List Create(int number)
+{
+	List L,t,cycle;
+	int a;
+	L = (List)malloc(sizeof (struct Node));
+	t = L;
+	L->next = NULL;
+
+	for (int i=0;i<number;i++)
+	{
+		scanf(" %d",&a);
+		List temp;
+		temp = (List)malloc(sizeof(struct Node));
+		temp->next = NULL;
+		temp->data = a;
+		t->next = temp;
+		t = temp;
+	}
+	cycle = L;
+	L = L->next;
+	free(cycle);
+	return L;
+}
+
+int Cul(List L1,List L2)
+{
+	int result,number;
+	List L3,t,cycle;
+	List l1, l2;
+	l1 = L1;
+	l2 = L2;
+	L3 = (List)malloc(sizeof(struct Node));
+	t = L3;
+	L3->next = NULL;
+	number = 0;
+	while (l1 && l2)
+	{
+		List temp;
+		temp = (List)malloc(sizeof(struct Node));
+		temp->next = NULL;
+		if (l1->data==l2->data)
+		{
+			temp->data = l1->data;	
+			l1 = l1->next;
+		}
+		else if(l1->data>l2->data)
+		{
+			temp->data = l2->data;
+			l2 = l2->next;
+		}
+		else
+		{
+			temp->data = l1->data;
+			l1 = l1->next;
+		}
+		t->next = temp;
+		t = temp;
+		number++;
+	}
+	while (l1)
+	{
+		List temp;
+		temp = (List)malloc(sizeof(struct Node));
+		temp->next = NULL;
+		temp->data = l1->data;
+		t->next = temp;
+		t = temp;
+		l1 = l1->next;
+		number++;
+	}
+	while (l2)
+	{
+		List temp;
+		temp = (List)malloc(sizeof(struct Node));
+		temp->next = NULL;
+		temp->data = l2->data;
+		t->next = temp;
+		t = temp;
+		l2 = l2->next;
+		number++;
+	}
+	cycle = L3;
+	L3 = L3->next;
+	free(cycle);
+	for (int i=1;i<(number+1)/2;i++)
+	{
+		L3 = L3->next;
+	}
+	result = L3->data;
+	return result;
+}
