@@ -1,0 +1,135 @@
+/*未写完*/
+/*目前AVL树的创建写的很蠢*/
+#pragma warning(disable:4996)
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct AVLNode *AVLTree;
+struct AVLNode {
+	int Data;
+	AVLTree Left;
+	AVLTree Right;
+	int Height;
+};
+
+AVLTree CreateAVLTree();
+AVLTree SingleLeftRotation(AVLTree A);
+AVLTree SingleRightRotation(AVLTree A);
+AVLTree DoubleLeftRightRotation(AVLTree A);
+AVLTree DoubleRightLeftRotation(AVLTree A);
+int GetHeight(AVLTree BT);
+int Max(int a,int b);
+int GetHeight(AVLTree A);
+
+
+int main()
+{
+	AVLTree AVLT;
+	AVLT = CreateAVLTree();
+	return 0;
+}
+/* 你的代码将被嵌在这里 */
+
+int GetHeight(AVLTree BT)
+{
+	if (BT==NULL)
+	{
+		return 0;
+	}
+	if (BT->Left==NULL && BT->Right==NULL)
+	{
+		return 1;
+	}
+	if (BT->Right==NULL)
+	{
+		return 1 + GetHeight(BT->Left);
+	}
+	if (BT->Left== NULL)
+	{
+		return 1 + GetHeight(BT->Right);
+	}
+	return GetHeight(BT->Left) > GetHeight(BT->Right) ? GetHeight(BT->Left) +1:1+ GetHeight(BT->Right);
+}
+
+AVLTree CreateAVLTree()
+{
+	AVLTree AVLT;
+	AVLT = (AVLTree)malloc(sizeof(struct AVLNode));
+	int data[3];
+	scanf("%d %d %d ",&data[0],&data[1],&data[2]);
+	for (int i=0;i<3;i++)
+	{
+		for (int j=i;j<3;j++)
+		{
+			int temp;
+			if (data[i]<data[j])
+			{
+				temp = data[i];
+				data[i] = data[j];
+				data[j] = data[i];
+			}
+		}
+	}       // data[0]~data[2] is from max to min
+		AVLTree tempL,tempR;
+		tempL = (AVLTree)malloc(sizeof(struct AVLNode));
+		tempR = (AVLTree)malloc(sizeof(struct AVLNode));
+		AVLT->Data = data[1];
+		tempR->Data = data[0];
+		tempL->Data = data[2];
+		AVLT->Left = tempL;
+		AVLT->Right = tempR;
+		tempL->Left = NULL;
+		tempL->Right = NULL;
+		tempR->Left = NULL;
+		tempR->Right = NULL;
+		AVLT->Height = 1;
+		tempL->Height = 0;
+		tempR->Height = 0;
+}
+
+int Max(int a,int b)
+{
+	return a > b ? a : b;
+}
+
+int GetHeight(AVLTree A)
+{
+	if (!A)
+	{
+		return 0;
+	}
+	if (A->Left==NULL && A->Right==NULL)
+	{
+		return 1;
+	}
+	if (A->Left==NULL)
+	{
+		return 1 + GetHeight(A->Right);
+	}
+	if (A->Right==NULL)
+	{
+		return 1 + GetHeight(A->Left);
+	}
+	return GetHeight(A->Left) > GetHeight(A->Right) ? 1 + GetHeight(A->Left) : 1 + GetHeight(A->Right);
+}
+
+AVLTree SingleLeftRotation(AVLTree A)
+{
+
+}
+
+AVLTree SingleRightRotation(AVLTree A)
+{
+
+}
+
+AVLTree DoubleLeftRightRotation(AVLTree A)
+{
+
+}
+
+AVLTree DoubleRightLeftRotation(AVLTree A)
+{
+
+}
