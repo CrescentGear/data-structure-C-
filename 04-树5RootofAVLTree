@@ -1,5 +1,3 @@
-/*未写完*/
-/*目前AVL树的创建写的很蠢*/
 #pragma warning(disable:4996)
 
 #include <stdio.h>
@@ -18,6 +16,7 @@ AVLTree SingleLeftRotation(AVLTree A);
 AVLTree SingleRightRotation(AVLTree A);
 AVLTree DoubleLeftRightRotation(AVLTree A);
 AVLTree DoubleRightLeftRotation(AVLTree A);
+AVLTree Insert(AVLTree A,int x);
 int GetHeight(AVLTree BT);
 int Max(int a,int b);
 int GetHeight(AVLTree A);
@@ -25,8 +24,16 @@ int GetHeight(AVLTree A);
 
 int main()
 {
+	int N;
 	AVLTree AVLT;
+	scanf("%d",&N);
 	AVLT = CreateAVLTree();
+	for (int i=0;i<N-2;i++)
+	{
+		int number;
+		scanf("%d",&number);
+		AVLT = Insert(AVLT,number);
+	}
 	return 0;
 }
 /* 你的代码将被嵌在这里 */
@@ -54,38 +61,56 @@ int GetHeight(AVLTree BT)
 
 AVLTree CreateAVLTree()
 {
-	AVLTree AVLT;
+	AVLTree AVLT,t,temp;
 	AVLT = (AVLTree)malloc(sizeof(struct AVLNode));
-	int data[3];
-	scanf("%d %d %d ",&data[0],&data[1],&data[2]);
-	for (int i=0;i<3;i++)
+	t = AVLT;
+	temp = (AVLTree)malloc(sizeof(struct AVLNode));
+	scanf(" %d %d",&t->Data,&temp->Data);
+	if (temp->Data>t->Data) // temp is larger
 	{
-		for (int j=i;j<3;j++)
+		t->Right = temp;
+		t->Height++;
+	}
+	else                //temp is larger
+	{
+		t->Left = temp;
+		t->Height++;
+	}
+	return AVLT;
+
+}
+
+AVLTree Insert(AVLTree A, int x)
+{
+	if (!A)
+	{
+		AVLTree A;
+		A = (AVLTree)malloc(sizeof(struct AVLNode));
+		A->Data = x;
+		A->Left = NULL;
+		A->Right = NULL;
+		A->Height = 0;
+	}
+	else {
+		if (x < A->Data)
 		{
-			int temp;
-			if (data[i]<data[j])
+			A->Left = Insert(A->Left, x);
+			if (x < A->Data)//need leftRo
 			{
-				temp = data[i];
-				data[i] = data[j];
-				data[j] = data[i];
+				A = SingleLeftRotation(A);
+			}
+			else
+			{
+				A = DoubleLeftRightRotation(A);
 			}
 		}
-	}       // data[0]~data[2] is from max to min
-		AVLTree tempL,tempR;
-		tempL = (AVLTree)malloc(sizeof(struct AVLNode));
-		tempR = (AVLTree)malloc(sizeof(struct AVLNode));
-		AVLT->Data = data[1];
-		tempR->Data = data[0];
-		tempL->Data = data[2];
-		AVLT->Left = tempL;
-		AVLT->Right = tempR;
-		tempL->Left = NULL;
-		tempL->Right = NULL;
-		tempR->Left = NULL;
-		tempR->Right = NULL;
-		AVLT->Height = 1;
-		tempL->Height = 0;
-		tempR->Height = 0;
+		else if (x > A->Data)
+		{
+			A->Right = Insert(A->Right, x);
+		}
+		A->Height++;
+		return A;
+	}
 }
 
 int Max(int a,int b)
@@ -93,43 +118,38 @@ int Max(int a,int b)
 	return a > b ? a : b;
 }
 
-int GetHeight(AVLTree A)
-{
-	if (!A)
-	{
-		return 0;
-	}
-	if (A->Left==NULL && A->Right==NULL)
-	{
-		return 1;
-	}
-	if (A->Left==NULL)
-	{
-		return 1 + GetHeight(A->Right);
-	}
-	if (A->Right==NULL)
-	{
-		return 1 + GetHeight(A->Left);
-	}
-	return GetHeight(A->Left) > GetHeight(A->Right) ? 1 + GetHeight(A->Left) : 1 + GetHeight(A->Right);
-}
-
 AVLTree SingleLeftRotation(AVLTree A)
 {
-
+	AVLTree B;
+	B = A->Left;
+	A->Left = B->Right;
+	B->Right = A;
+	A->Height = GetHeight(A);
+	B->Height = GetHeight(B) ;
+	B->Height = Max(A->Height,B->Height)+1;
+	return B;
 }
 
 AVLTree SingleRightRotation(AVLTree A)
 {
-
+	AVLTree B;
+	B = A->Right;
+	A->Right = B->Left;
+	B->Left = A;
+	A->Height = GetHeight(A);
+	B->Height = GetHeight(B);
+	B->Height = Max(A->Height, B->Height) + 1;
+	return B;
 }
 
 AVLTree DoubleLeftRightRotation(AVLTree A)
 {
-
+	A->Left = SingleRightRotation(A->Left);
+	return SingleLeftRotation(A);
 }
 
 AVLTree DoubleRightLeftRotation(AVLTree A)
 {
-
+	A->Right = SingleLeftRotation(A->Right);
+	return SingleRightRotation(A);
 }
