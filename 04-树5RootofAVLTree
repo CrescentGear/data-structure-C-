@@ -1,4 +1,3 @@
-/*未写完*/
 #pragma warning(disable:4996)
 
 #include <stdio.h>
@@ -12,74 +11,47 @@ struct AVLNode {
 	int Height;
 };
 
-AVLTree CreateAVLTree();
 AVLTree SingleLeftRotation(AVLTree A);
 AVLTree SingleRightRotation(AVLTree A);
 AVLTree DoubleLeftRightRotation(AVLTree A);
 AVLTree DoubleRightLeftRotation(AVLTree A);
-AVLTree Insert(AVLTree A,int x);
+AVLTree Insert(AVLTree A, int x);
 int GetHeight(AVLTree BT);
-int Max(int a,int b);
+int Max(int a, int b);
 int GetHeight(AVLTree A);
 
 
 int main()
 {
-	int N;
-	AVLTree AVLT;
-	scanf("%d",&N);
-	AVLT = CreateAVLTree();
-	for (int i=0;i<N-2;i++)
+	int number;
+	scanf("%d", &number);
+	AVLTree T = NULL;
+
+	for (int i = 0; i < number; i++)
 	{
-		int number;
-		scanf("%d",&number);
-		AVLT = Insert(AVLT,number);
+		int n;
+		scanf(" %d", &n);
+		T = Insert(T, n);
 	}
+	printf("%d", T->Data);
 	return 0;
 }
 /* 你的代码将被嵌在这里 */
 
 int GetHeight(AVLTree BT)
 {
-	if (BT==NULL)
+	int height;
+	if (BT == NULL)
 	{
 		return 0;
 	}
-	if (BT->Left==NULL && BT->Right==NULL)
+	else
 	{
-		return 1;
+		height = GetHeight(BT->Left) > GetHeight(BT->Right) ? GetHeight(BT->Left) : GetHeight(BT->Right);
+		return height + 1;
 	}
-	if (BT->Right==NULL)
-	{
-		return 1 + GetHeight(BT->Left);
-	}
-	if (BT->Left== NULL)
-	{
-		return 1 + GetHeight(BT->Right);
-	}
-	return GetHeight(BT->Left) > GetHeight(BT->Right) ? GetHeight(BT->Left) +1:1+ GetHeight(BT->Right);
 }
 
-AVLTree CreateAVLTree()
-{
-	AVLTree AVLT,t,temp;
-	AVLT = (AVLTree)malloc(sizeof(struct AVLNode));
-	t = AVLT;
-	temp = (AVLTree)malloc(sizeof(struct AVLNode));
-	scanf(" %d %d",&t->Data,&temp->Data);
-	if (temp->Data>t->Data) // temp is larger
-	{
-		t->Right = temp;
-		t->Height++;
-	}
-	else                //temp is larger
-	{
-		t->Left = temp;
-		t->Height++;
-	}
-	return AVLT;
-
-}
 
 AVLTree Insert(AVLTree A, int x)
 {
@@ -91,30 +63,46 @@ AVLTree Insert(AVLTree A, int x)
 		A->Left = NULL;
 		A->Right = NULL;
 		A->Height = 0;
+		return A;
 	}
-	else {
+	else
+	{
 		if (x < A->Data)
 		{
 			A->Left = Insert(A->Left, x);
-			if (x < A->Data)//need leftRo
+			if (GetHeight(A->Left) - GetHeight(A->Right) == 2)
 			{
-				A = SingleLeftRotation(A);
-			}
-			else
-			{
-				A = DoubleLeftRightRotation(A);
+				if (x < A->Left->Data)
+				{
+					A = SingleLeftRotation(A);
+				}
+				else
+				{
+					A = DoubleLeftRightRotation(A);
+				}
 			}
 		}
-		else if (x > A->Data)
+		else
 		{
 			A->Right = Insert(A->Right, x);
+			if (GetHeight(A->Left) - GetHeight(A->Right) == -2)
+			{
+				if (x > A->Right->Data)
+				{
+					A = SingleRightRotation(A);
+				}
+				else
+				{
+					A = DoubleRightLeftRotation(A);
+				}
+			}
 		}
-		A->Height++;
-		return A;
 	}
+	A->Height = Max(GetHeight(A->Left), GetHeight(A->Right)) + 1;
+	return A;
 }
 
-int Max(int a,int b)
+int Max(int a, int b)
 {
 	return a > b ? a : b;
 }
@@ -125,9 +113,9 @@ AVLTree SingleLeftRotation(AVLTree A)
 	B = A->Left;
 	A->Left = B->Right;
 	B->Right = A;
-	A->Height = GetHeight(A);
-	B->Height = GetHeight(B) ;
-	B->Height = Max(A->Height,B->Height)+1;
+
+	A->Height = Max(GetHeight(A->Left), GetHeight(A->Right)) + 1;
+	B->Height = Max(GetHeight(B->Left), A->Height) + 1;
 	return B;
 }
 
@@ -137,9 +125,10 @@ AVLTree SingleRightRotation(AVLTree A)
 	B = A->Right;
 	A->Right = B->Left;
 	B->Left = A;
-	A->Height = GetHeight(A);
-	B->Height = GetHeight(B);
-	B->Height = Max(A->Height, B->Height) + 1;
+
+	A->Height = Max(GetHeight(A->Left), GetHeight(A->Right)) + 1;
+	B->Height = Max(GetHeight(B->Right), A->Height) + 1;
+
 	return B;
 }
 
