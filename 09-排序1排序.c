@@ -4,8 +4,11 @@
 
 void Swap(long A[],long i, long j);  //换值
 void BubbleSort(long A[], int N);   //冒泡19/25 测试点4，6，8超时   
-void SelectionSort(long A[], int N);//选择 25/25                总耗时：3722 ms
-void InsertSort(long A[], int N);   //插入 25/25                总耗时：3167 ms
+void SelectionSort(long A[], int N);//选择 25/25                                      总耗时：3722 ms
+void InsertSort(long A[], int N);   //插入 25/25                                      总耗时：3167 ms
+void ShellSort(long A[], int N);    //希尔 25/25 （使用Sedgewick增量序列）              总耗时：74 ms
+void ShellSort1(long A[], int N);   //希尔 25/25 （使用原始希尔排序）                    总耗时：66 ms 
+
 
 int main()
 {
@@ -76,3 +79,43 @@ void InsertSort(long A[], int N)
 	}
 }
 
+void ShellSort(long A[], int N)
+{
+	//用Sedgewick增量序列
+   	int i,j,k;
+	int guard;
+	int Sedgewick[] = {929, 505, 209, 109, 41, 19, 5, 1, 0};
+	for (i = 0; Sedgewick[i] >= N; i++);
+	guard = i;
+		for(i=guard;Sedgewick[i]>0;i++)
+		{ 		
+			long step = Sedgewick[i];
+			for (k=step;k<N;k++)
+			{
+				long temp = A[k];
+				for (j=k;j>=step && temp<A[j-step];j-=step)
+				{
+					A[j] = A[j - step];
+				}
+				A[j] = temp;
+			}
+		}
+}
+void ShellSort1(long A[], int N)
+{
+	int i,j,k;
+
+		for(i=N;i>0;i/=2)
+		{ 		
+			long step = i;
+			for (k=step;k<N;k++)
+			{
+				long temp = A[k];
+				for (j=k;j>=step && temp<A[j-step];j-=step)
+				{
+					A[j] = A[j - step];
+				}
+				A[j] = temp;
+			}
+		}
+}
