@@ -14,8 +14,8 @@ struct Node     //链表
 int pop(List S);
 void push(int number , List S);
 int IsEmpty(List S);
-List Input(int N); //队列的输入
-List Input1();     //栈的输入
+List Input(int N); //用户的输入
+List Input1();     //判断栈的输入
 int Is(List S,List check,int M);//判断函数
 
 int main()
@@ -32,9 +32,9 @@ int main()
 	List check;
 	for (i = 0; i < K; i++)  //一一判断输入的数字组是否符合要求
 	{
-		check = Input1();  //用来做判断的栈
+		check = Input1();   //用来做判断的栈
 		List S1;
-		S1 = Input(N); //输入的数字组以队列的方式储存（非循环队列）
+		S1 = Input(N);  //用户的输入
 		result = Is(S1, check, M); //判断结果 1为yes 0为no
 		if (result == 1)
 		{
@@ -81,7 +81,7 @@ void push(int number , List S)  //把元素压入栈顶
 	S->next = temp;
 }
 
-List Input(int N)  //队列的输入
+List Input(int N)  //用户的输入
 {
 	List S;
 	List temp1,cycle;
@@ -107,7 +107,7 @@ List Input(int N)  //队列的输入
 	return S;
 }
 
-List Input1( )//栈的输入
+List Input1( )//判断栈的输入
 {
 	List S;
 	List temp1;
