@@ -8,7 +8,11 @@ void SelectionSort(long A[], int N);//选择 25/25                              
 void InsertSort(long A[], int N);   //插入 25/25                                      总耗时：3167 ms
 void ShellSort(long A[], int N);    //希尔 25/25 （使用Sedgewick增量序列）              总耗时：74 ms
 void ShellSort1(long A[], int N);   //希尔 25/25 （使用原始希尔排序）                    总耗时：66 ms 
-
+// 
+void Merge(long A[], long temp[], int L, int R, int RightEnd);
+void MSort(long A[], long temp[], int L, int R);
+void MergeSort(long A[], int N);
+// 
 
 int main()
 {
@@ -118,4 +122,63 @@ void ShellSort1(long A[], int N)
 				A[j] = temp;
 			}
 		}
+}
+
+void Merge(long A[], long temp[], int L, int R, int RightEnd)
+{
+	int LeftEnd;
+	LeftEnd = R - 1;
+	int j = L;
+	int i = 0;
+	int NumElement = RightEnd - L + 1;
+	while (L <= LeftEnd && R <= RightEnd)
+	{
+		if (A[L] > A[R])
+		{
+			temp[j] = A[R];
+			j++;
+			R++;
+		}
+		else
+		{
+			temp[j] = A[L];
+			j++;
+			L++;
+		}
+	}
+	while (L <= LeftEnd)
+	{
+		temp[j] = A[L];
+		j++;
+		L++;
+	}
+	while (R <= RightEnd)
+	{
+		temp[j] = A[R];
+		j++;
+		R++;
+	}
+	for (i = 0; i < NumElement; i++, RightEnd--)
+	{
+		A[RightEnd] = temp[RightEnd];
+	}
+}
+
+void MSort(long A[], long temp[], int L, int R)
+{
+	int center;
+	center = (L + R) / 2;
+	if (L < R)
+	{
+		MSort(A, temp, L, center);
+		MSort(A, temp, center + 1, R);
+		Merge(A, temp, L, center + 1, R);
+	}
+}
+
+void MergeSort(long A[], int N)
+{
+	long temp[N];
+	MSort(A, temp, 0, N - 1);
+
 }
