@@ -8,7 +8,7 @@ void SelectionSort(long A[], int N);//选择 25/25                              
 void InsertSort(long A[], int N);   //插入 25/25                                      总耗时：3167 ms
 void ShellSort(long A[], int N);    //希尔 25/25 （使用Sedgewick增量序列）              总耗时：74 ms
 void ShellSort1(long A[], int N);   //希尔 25/25 （使用原始希尔排序）                    总耗时：66 ms 
-// 
+//				      归并 25/25					    总耗时：54 ms
 void Merge(long A[], long temp[], int L, int R, int RightEnd);
 void MSort(long A[], long temp[], int L, int R);
 void MergeSort(long A[], int N);
