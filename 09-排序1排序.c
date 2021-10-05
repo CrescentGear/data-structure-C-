@@ -14,6 +14,7 @@ void MSort(long A[], long temp[], int L, int R);
 void MergeSort(long A[], int N);
 // 
 
+
 int main()
 {
 	int N;
@@ -178,7 +179,35 @@ void MSort(long A[], long temp[], int L, int R)
 
 void MergeSort(long A[], int N)
 {
-	long temp[N];
-	MSort(A, temp, 0, N - 1);
 
+/*递归↓*/
+	//long temp[N];
+	//MSort(A, temp, 0, N - 1);
+/*递归↑*/
+
+
+/*非递归↓*/
+	//MSort2(A, 0, N);   
+/*非递归↑*/
+
+}
+
+void MSort2(long A[], int L, int R)
+{
+	long temp[R];
+	int length = 1;
+	int i = 0;
+	if (R == 1)
+	{
+		return;
+	}
+	for (length;length<R; length *= 2)
+	{
+		for (i = 0; i <= R - 2 * length; i += length * 2)
+			Merge(A, temp, i, length + i, i + length*2-1);
+		if (i + length < R)
+		{
+			Merge(A, temp, i, i + length, R - 1);
+		}
+	}
 }
