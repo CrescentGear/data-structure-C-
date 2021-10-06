@@ -12,8 +12,10 @@ void ShellSort1(long A[], int N);   //希尔 25/25 （使用原始希尔排序�
 void Merge(long A[], long temp[], int L, int R, int RightEnd);
 void MSort(long A[], long temp[], int L, int R);
 void MergeSort(long A[], int N);
-// 
-
+void MSort2(long A[], int L, int R);
+//					  堆排序 25/25                   总耗时：55 ms
+void Heap(long A[], int j, long N);
+void HeapSort(long A[], long N);
 
 int main()
 {
@@ -210,4 +212,46 @@ void MSort2(long A[], int L, int R)
 			Merge(A, temp, i, i + length, R - 1);
 		}
 	}
+}
+
+void Heap(long A[], int j, long N)
+{
+	int i;
+	int child;
+	long temp = A[j];
+	for (i = j; i * 2 + 1 < N; i = child)
+	{
+		child = i * 2 + 1;
+		if (A[child] < A[child + 1] && child + 1 < N)
+		{
+			child++;
+		}
+		if (A[child] <= temp)
+		{
+			break;
+		}
+		else
+		{
+			A[i] = A[child];
+		}
+	}
+	A[i] = temp;
+}
+
+void HeapSort(long A[], long N)
+{
+	int i;
+	long temp;
+	for (i = (N - 1) / 2; i >= 0; i--)
+	{
+		Heap(A, i, N);
+	}
+	for (i = 0; i < N; i++)
+	{
+		temp = A[0];
+		A[0] = A[N - 1 - i];
+		A[N - 1 - i] = temp;
+		Heap(A, 0, N - i - 1);
+	}
+
 }
